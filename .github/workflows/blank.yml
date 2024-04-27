@@ -22,7 +22,7 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - run: echo "🎉 S M Rifat rock - The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🎉 S M Rifat rock - The job was automatically triggered by a event."
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
