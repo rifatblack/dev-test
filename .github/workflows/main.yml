@@ -3,7 +3,7 @@ name: Deploy React App to AWS S3 and CloudFront
 on:
   push:
     branches:
-      - master  # Change this to your main branch if different
+      - master # Change this to your main branch if different
 
 jobs:
   build-and-deploy:
@@ -16,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'  # Use the Node.js version required by your project
+          node-version: "16" # Use the Node.js version required by your project
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
@@ -30,7 +30,7 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ap-northeast-1  # Change this to your S3 bucket region
+          AWS_REGION: US East (N. Virginia) us-east-1 # Change this to your S3 bucket region
 
       - name: Invalidate CloudFront cache
         run: |
@@ -38,4 +38,4 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ap-northeast-1  # Change this to your CloudFront distribution region
+          AWS_REGION: US East (N. Virginia) us-east-1 # Change this to your CloudFront distribution region
