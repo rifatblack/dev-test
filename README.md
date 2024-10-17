@@ -1,4 +1,51 @@
-# Getting Started with Create React App test 20
+# Step 1: Requiremnt Analysis & Planning 
+
+At first, I went through the project's details & tried to understand the requirements. Then I started thinking which technology stack & resources should I use. 
+
+I started reading & following :
+
+1. https://reactjs.org/docs/create-a-new-react-app.html
+
+2. https://tailwindcss.com/docs/guides/create-react-app
+
+3. https://www.freecodecamp.org/news/build-a-search-filter-using-react-and-react-hooks/
+
+# Step 2: Spliting UI
+
+
+Rental Software
+
+- [x] Displaying Data from Json
+- [x] SearchBox (Dynamic serach by using stringify)
+- [x] Two buttons
+- [x] Checking whether product available for rent or not , If availibity true then product available for booking either available for returing.  
+- [x] Modal/PopUp for Booking 
+  - [x] Product dropdown
+  - [x] Showing Product & checking condition
+  - [x] Start date
+  - [x] End date
+- [x] Book confirm popup
+  - [x] Pop Up message 
+  - [x] Confirmation whether Yes Or No
+- [x] Return Modal
+- [x] Return confirm popup
+- [x] Confirm button
+
+
+# Step 3: Resoures I have used:
+
+1.  Material UI https://mui.com/
+2. Date Range Picker https://www.daterangepicker.com/
+3. https://date-fns.org/
+4. https://jestjs.io/docs/tutorial-react 
+
+
+
+# Step 4: Figuring out how to store data as it suggested not to use backend 
+
+As it's recommended not to use backend, so we don't have any database. So, i figured out Js has already awesome solution that ia localStorage/sessionStorage oobject. So for fetching & storing data I have used localStorage.
+
+# Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
