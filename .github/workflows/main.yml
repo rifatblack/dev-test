@@ -13,10 +13,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "16" # Use the Node.js version required by your project
+      # Step 1: Install Ansible
+      - name: Install Ansible
+        run: |
+          sudo apt update
+          sudo apt install -y ansible
+
+      # Step 2: Run Ansible Playbook to Install Node.js
+      - name: Install Node.js using Ansible
+        run: |
+          ansible-playbook nodejs-setup.yml
+
+      # - name: Set up Node.js
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: "16" # Use the Node.js version required by your project
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
