@@ -1,15 +1,23 @@
 provider "aws" {
-  region = "us-east-1"  # Change this to your preferred region
+  region = "us-east-1"  # Change to your preferred region
 }
 
 # Create an S3 bucket for the React app
 resource "aws_s3_bucket" "react_app_bucket" {
-  bucket = "your-react-app-bucket-name"  # Change this to a unique bucket name
+  bucket = "your-react-app-bucket-name"  # Replace with a unique bucket name
   acl    = "public-read"
+}
 
-  website {
-    index_document = "index.html"
-    error_document = "index.html"
+# Configure the S3 bucket for website hosting
+resource "aws_s3_bucket_website_configuration" "website_config" {
+  bucket = aws_s3_bucket.react_app_bucket.id
+
+  index_document {
+    suffix = "index.html"
+  }
+
+  error_document {
+    key = "index.html"
   }
 }
 
@@ -61,6 +69,13 @@ resource "aws_cloudfront_distribution" "react_app_distribution" {
     min_ttl                = 0
     default_ttl            = 3600
     max_ttl                = 86400
+  }
+
+  # Add a restrictions block (this is required now)
+  restrictions {
+    geo_restriction {
+      restriction_type = "none"  # You can set restrictions for specific countries if required
+    }
   }
 
   price_class = "PriceClass_100"
