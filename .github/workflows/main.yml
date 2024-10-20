@@ -3,7 +3,7 @@ name: Deploy React App to AWS S3 and CloudFront
 on:
   push:
     branches:
-      - master # Change this to your main branch if different
+      - master # Update if needed
 
 jobs:
   build-and-deploy:
@@ -13,46 +13,39 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 1: Install Ansible
-      - name: Install Ansible
-        run: |
-          sudo apt update
-          sudo apt install -y ansible
-
-      # Step 2: Run Ansible Playbook to Install Node.js
-      - name: Install Node.js using Ansible
-        run: |
-          ansible-playbook nodejs-setup.yml
-
-      # - name: Set up Node.js
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: "16" # Use the Node.js version required by your project
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
 
       - name: Install dependencies
         run: npm install --legacy-peer-deps
 
-      # - name: Build project
-      #   run: npm run build
-
-      # Step 4: Build the React app with legacy OpenSSL provider
       - name: Build project
-        run: |
-          export NODE_OPTIONS=--openssl-legacy-provider
-          npm run build
+        run: npm run build
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Initialize Terraform
+        run: terraform init
+
+      - name: Apply Terraform plan
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: terraform apply -auto-approve
 
       - name: Deploy to S3
         run: |
-          aws s3 sync build s3://${{ secrets.AWS_S3_BUCKET }} --delete
+          aws s3 sync build s3://$(terraform output -raw s3_bucket_name) --delete
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: us-east-1 # Change this to your S3 bucket region
 
       - name: Invalidate CloudFront cache
         run: |
-          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
+          aws cloudfront create-invalidation --distribution-id $(terraform output -raw cloudfront_url) --paths "/*"
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: us-east-1 # Change this to your CloudFront distribution region
