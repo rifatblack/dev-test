@@ -2,10 +2,12 @@ provider "aws" {
   region = "us-east-1"  # Change to your preferred region
 }
 
-# Create an S3 bucket for the React app
+# Create an S3 bucket for the React app (no ACLs)
 resource "aws_s3_bucket" "react_app_bucket" {
   bucket = "your-react-app-bucket-name"  # Replace with a unique bucket name
-  acl    = "public-read"
+  # acl argument removed due to conflict with ObjectOwnership settings
+
+  # Other optional S3 settings like versioning or server-side encryption can go here
 }
 
 # Configure the S3 bucket for website hosting
@@ -71,7 +73,6 @@ resource "aws_cloudfront_distribution" "react_app_distribution" {
     max_ttl                = 86400
   }
 
-  # Add a restrictions block (this is required now)
   restrictions {
     geo_restriction {
       restriction_type = "none"  # You can set restrictions for specific countries if required
